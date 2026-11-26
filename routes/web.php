@@ -1,27 +1,21 @@
 <?php
 
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [PageController::class, 'home'])
+    ->name('home');
 
-Route::get('/about', function () {
-    return 'Страница о нашем проекте';
-});
+Route::get('/about', [PageController::class, 'about']);
 
-Route::get('/user/{id}', function (string $id) {
-    return 'Страница пользователя №'.$id;
-})->whereNumber('id');
+Route::get('/user/{id}', [PageController::class, 'show'])
+    ->whereNumber('id');
 
-Route::get('/hello/{name?}', function (string $name = 'гость') {
-    return 'Привет, '.e($name).'!';
-})->name('hello');
+Route::get('/hello/{name?}', [PageController::class, 'hello'])
+    ->name('hello');
 
-Route::get('/posts/{post}/comments/{comment}', function (string $post, string $comment) {
-    return "Статья №{$post}, комментарий №{$comment}";
-})->whereNumber(['post', 'comment']);
+Route::get('/posts/{post}/comments/{comment}', [PageController::class, 'showComment'])
+    ->whereNumber(['post', 'comment']);
 
-Route::get('/posts/{id}', function (string $id) {
-    return 'Просмотр статьи №'.$id;
-})->whereNumber('id')->name('posts.show');
+Route::get('/posts/{id}', [PageController::class, 'showPost'])
+    ->whereNumber('id')->name('posts.show');

@@ -81,3 +81,35 @@ Route::get('/', function () {
 ```
 
 Для повторной демонстрации запустите `php artisan serve` из папки проекта и откройте адреса из таблицы. Команда `php artisan test` также завершилась успешно. Прошли оба штатных теста проекта.
+
+# Практическая работа 03 — Контроллеры в Laravel
+
+Командой `php artisan make:controller PageController` я создал [`PageController.php`](app/Http/Controllers/PageController.php) и перенёс в его методы обработку всех шести маршрутов. В [`routes/web.php`](routes/web.php) указал пары вида `[PageController::class, 'show']`. Имена маршрутов и ограничения на числовые параметры сохранились.
+
+Метод `home()` возвращает приветственную страницу из первой работы. Метод `hello()` передаёт имя из адреса в [`hello.blade.php`](resources/views/hello.blade.php), где Blade выводит его в заголовке через `{{ $name }}`. Если имя пропущено, используется «гость».
+
+## Проверка в браузере
+
+| Адрес | Результат |
+| --- | --- |
+| [`/`](http://127.0.0.1:8000/) | Привет! Это мой проект на Laravel. |
+| [`/hello/Анна`](http://127.0.0.1:8000/hello/%D0%90%D0%BD%D0%BD%D0%B0) | Привет, Анна! |
+| [`/hello`](http://127.0.0.1:8000/hello) | Привет, гость! |
+| [`/user/7`](http://127.0.0.1:8000/user/7) | Страница пользователя №7 |
+
+## Вывод списка маршрутов
+
+В выводе `php artisan route:list --except-vendor` у каждого учебного маршрута указан метод `PageController`.
+
+```text
+ GET|HEAD / .. home › PageController@home
+ GET|HEAD about .. PageController@about
+ GET|HEAD hello/{name?} .. hello › PageController@hello
+ GET|HEAD posts/{id} .. posts.show › PageController@showPost
+ GET|HEAD posts/{post}/comments/{comment} .. PageController@showComment
+ GET|HEAD user/{id} .. PageController@show
+
+ Showing [6] routes
+```
+
+Оба штатных теста прошли. Скриншоты демонстрации находятся в [Word-отчёте](REPORT.docx).
